@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "437003498757",
+    "project_id": "archroma-approve",
+    "storage_bucket": "archroma-approve.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437003498757:android:88bb0dc07745d046db336c",
+        "android_client_info": {
+          "package_name": "com.example.arch_approve"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAySW1VQOVtmie-CySkl9ojnxUaNO_gVJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
