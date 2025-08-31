@@ -12,12 +12,16 @@ class FirebaseInitializer {
     );
     await Future.delayed(Duration(seconds: 2));
 
-    // Background handler
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    if (Platform.isIOS || Platform.isAndroid) {
+      // Background handler
+      FirebaseMessaging.onBackgroundMessage(
+        _firebaseMessagingBackgroundHandler,
+      );
 
-    // Local notifications
-    await FirebaseNotification.initialize();
-    //getAPNSToken();
+      // Local notifications
+      await FirebaseNotification.initialize();
+      //getAPNSToken();
+    }
   }
 
   static Future<void> getAPNSToken() async {

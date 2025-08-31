@@ -31,14 +31,10 @@ class _MyAppState extends State<MyApp> {
       builder: (_, __) => GetMaterialApp(
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            titleTextStyle: TextStyle(
-              color: kBlackColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        title: "ArchApprove",
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system, // Switches based on device setting
         initialRoute: AppRoutesConstant.splash,
         getPages: AppRoutes.appRoute(),
       ),
