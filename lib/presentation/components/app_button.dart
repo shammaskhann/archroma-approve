@@ -7,6 +7,7 @@ class AppButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isLoading;
   final bool isDisabled;
+  final bool showGradient;
 
   const AppButton({
     super.key,
@@ -14,6 +15,7 @@ class AppButton extends StatelessWidget {
     required this.onPressed,
     this.isLoading = false,
     this.isDisabled = false,
+    this.showGradient = true,
   });
 
   @override
@@ -24,8 +26,16 @@ class AppButton extends StatelessWidget {
         height: 52,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isDisabled ? kPrimaryColor.withOpacity(0.5) : null,
-          gradient: isDisabled ? null : kLrtl,
+          color: isDisabled
+              ? kPrimaryColor.withOpacity(0.5)
+              : showGradient
+              ? null
+              : kPrimaryColor,
+          gradient: isDisabled
+              ? null
+              : showGradient
+              ? kLrtl
+              : null,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
@@ -40,14 +50,11 @@ class AppButton extends StatelessWidget {
           transitionBuilder: (child, anim) =>
               FadeTransition(opacity: anim, child: child),
           child: isLoading
-              ? const DotsLoader(key: ValueKey("loader"))
+              ? const DotsLoader(Colors.white, key: ValueKey("loader"))
               : Text(
                   text,
                   key: const ValueKey("text"),
-                  style: kHeadingTextStyle.copyWith(
-                    fontSize: 19,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
         ),
       ),

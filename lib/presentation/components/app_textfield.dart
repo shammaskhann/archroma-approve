@@ -33,20 +33,17 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         /// Label Above Field
-        Text(
-          widget.label,
-          style: kSubheadingTextStyle.copyWith(
-            color: kDarkPrimaryColor,
-            fontSize: 22,
-          ),
-        ),
+        Text(widget.label, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 6),
 
         /// TextField
         TextField(
           controller: widget.controller,
           obscureText: widget.isPassword ? _obscure : false,
-          style: kBodyTextStyle.copyWith(fontSize: 18),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: kBodyTextStyle.copyWith(color: Colors.grey),

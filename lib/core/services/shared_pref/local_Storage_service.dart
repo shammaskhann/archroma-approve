@@ -44,6 +44,11 @@ class UserPref {
     return prefs.getString(_uidKey);
   }
 
+  static Future<void> setDeviceToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_deviceTokenKey, token);
+  }
+
   static Future<String?> getDeviceToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_deviceTokenKey);

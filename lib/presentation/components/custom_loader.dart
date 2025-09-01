@@ -3,7 +3,8 @@ import 'dart:math' as Math;
 import 'package:flutter/material.dart';
 
 class DotsLoader extends StatefulWidget {
-  const DotsLoader({super.key});
+  final Color? color;
+  const DotsLoader(this.color, {super.key});
 
   @override
   State<DotsLoader> createState() => _DotsLoaderState();
@@ -36,11 +37,20 @@ class _DotsLoaderState extends State<DotsLoader>
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Transform.translate(offset: Offset(0, dot1), child: _dot()),
+            Transform.translate(
+              offset: Offset(0, dot1),
+              child: _dot(widget.color),
+            ),
             const SizedBox(width: 6),
-            Transform.translate(offset: Offset(0, dot2), child: _dot()),
+            Transform.translate(
+              offset: Offset(0, dot2),
+              child: _dot(widget.color),
+            ),
             const SizedBox(width: 6),
-            Transform.translate(offset: Offset(0, dot3), child: _dot()),
+            Transform.translate(
+              offset: Offset(0, dot3),
+              child: _dot(widget.color),
+            ),
           ],
         );
       },
@@ -53,11 +63,11 @@ class _DotsLoaderState extends State<DotsLoader>
     return -6 * (0.5 * (1 - Math.cos(progress * 2 * 3.1416)));
   }
 
-  Widget _dot() => Container(
+  Widget _dot(Color? color) => Container(
     width: 6,
     height: 6,
-    decoration: const BoxDecoration(
-      color: Colors.white,
+    decoration: BoxDecoration(
+      color: color ?? Colors.white,
       shape: BoxShape.circle,
     ),
   );

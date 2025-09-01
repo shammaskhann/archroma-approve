@@ -44,6 +44,9 @@ dependencies:
   googleapis_auth: ^2.0.0
   shared_preferences: ^2.5.3
   google_nav_bar: ^5.0.7
+  appwrite: ^18.0.0
+  file_picker: ^10.3.2
+  flutter_web_auth_2: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -100,8 +103,8 @@ flutter:
   fonts:
     - family: BankGothic
       fonts:
-        - asset: assets/fonts/BankGothic Md BT.ttf
-        - asset: assets/fonts/BankGothic Bold.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

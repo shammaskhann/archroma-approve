@@ -33,8 +33,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: "ArchApprove",
         theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.system, // Switches based on device setting
+        themeMode: ThemeMode.light, // Switches based on device setting
         initialRoute: AppRoutesConstant.splash,
         getPages: AppRoutes.appRoute(),
       ),

@@ -16,11 +16,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    TextTheme theme = Theme.of(context).textTheme;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final controller = Get.put(LoginController());
     return Scaffold(
-      backgroundColor: kWhiteColor,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: 10),
                           Text(
                             "Welcome Back 👋",
                             style: kHeadingTextStyle.copyWith(
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 8),
                           Text(
                             "Login to continue your journey",
-                            style: kSubheadingTextStyle.copyWith(
+                            style: theme.labelSmall?.copyWith(
                               color: Colors.white70,
                               fontSize: 16,
                             ),
@@ -93,6 +94,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         isPassword: true,
                         errorText: controller.passwordError,
                       ),
+                      const SizedBox(height: 16),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "Forgot Password?",
+                          style: theme.displaySmall?.copyWith(
+                            color: kPrimaryColor,
+                          ),
+                        ),
+                      ),
+
                       const SizedBox(height: 25),
                       Obx(
                         () => AppButton(
@@ -106,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                       ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),

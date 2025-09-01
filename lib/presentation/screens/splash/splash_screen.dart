@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/core/constants/app_theme.dart';
 import 'package:arch_approve/core/services/shared_pref/local_Storage_service.dart';
+import 'package:arch_approve/presentation/components/custom_loader.dart';
 import 'package:arch_approve/presentation/screens/login/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,14 +25,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkRole() async {
-    await Future.delayed(const Duration(seconds: 2));
+    final _auth = FirebaseAuth.instance;
+    final uid = _auth.currentUser?.uid;
     final role = await UserPref.getRole();
-    if (role == 'admin') {
-      Get.offAll(() => const LoginScreen());
-    } else if (role == "employee") {
-      Get.offAll(() => const LoginScreen());
+    log("ROLE: $role $uid");
+    if (role == 'admin' && uid != null) {
+      Get.offAllNamed(AppRoutesConstant.dashboard);
+    } else if (role == "Employee" && uid != null) {
+      Get.offAllNamed(AppRoutesConstant.dashboard);
     } else {
       Get.offAllNamed(AppRoutesConstant.login);
+      // Get.offAllNamed(AppRoutesConstant.dashboard);
     }
   }
 
@@ -36,20 +43,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: kWhiteColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/icons/logo.png'),
+            Image.asset('assets/icons/logo.png', width: 250),
             //Linear Progress Indicator
-            Container(
-              width: width * 0.6,
-              child: LinearProgressIndicator(
-                color: kPrimaryColor,
-                backgroundColor: kLightPrimaryColor,
-              ),
-            ),
+            DotsLoader(kLightPrimaryColor),
           ],
         ),
       ),

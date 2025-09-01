@@ -2,6 +2,7 @@ import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/presentation/screens/dashboard/dashboard_screen.dart';
 import 'package:arch_approve/presentation/screens/login/login_screen.dart';
 import 'package:arch_approve/presentation/screens/splash/splash_screen.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/apply_leaves_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
@@ -23,6 +24,12 @@ class AppRoutes {
       GetPage(
         name: AppRoutesConstant.dashboard,
         page: () => const DashboardScreen(),
+        transitionDuration: const Duration(milliseconds: 500),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: AppRoutesConstant.applyLeave,
+        page: () => const ApplyLeavesScreen(),
         transitionDuration: const Duration(milliseconds: 500),
         transition: Transition.fadeIn,
       ),

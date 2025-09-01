@@ -1,0 +1,198 @@
+import 'package:arch_approve/core/constants/app_theme.dart';
+import 'package:arch_approve/presentation/components/app_button.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/apply_leave_controller.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/widget/attachment_section.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/widget/leave_type_dropdown.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/widget/select_date_field.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class ApplyLeavesScreen extends StatelessWidget {
+  const ApplyLeavesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.put(ApplyLeaveController());
+    TextTheme theme = Theme.of(context).textTheme;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Apply Leave"),
+        backgroundColor: kPrimaryColor,
+        foregroundColor: Colors.white,
+      ),
+      body: Obx(
+        () => SingleChildScrollView(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Leave Application Form", style: theme.headlineMedium),
+              SizedBox(height: 8.h),
+              Text(
+                "Please provide information about your leave.",
+                style: theme.labelSmall?.copyWith(color: Colors.grey[600]),
+              ),
+              SizedBox(height: 24.h),
+
+              // Leave Type
+              _buildSectionTitle("Leave Type", theme),
+              SizedBox(height: 8.h),
+              buildLeaveTypeDropdown(controller, theme),
+              SizedBox(height: 20.h),
+
+              // Date Selection
+              _buildSectionTitle("Date Range", theme),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: buildDateField(
+                      "Start Date",
+                      controller.startDate,
+                      (date) => controller.setStartDate(date),
+                      theme,
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                  Expanded(
+                    child: buildDateField(
+                      "End Date",
+                      controller.endDate,
+                      (date) => controller.setEndDate(date),
+                      theme,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20.h),
+
+              // Reason
+              _buildSectionTitle("Reason", theme),
+              SizedBox(height: 8.h),
+              _buildTextField(
+                hint: "Enter reason for leave",
+                onChanged: controller.setReason,
+                maxLines: 2,
+                theme: theme,
+              ),
+              SizedBox(height: 20.h),
+
+              // Description
+              // _buildSectionTitle("Description (Optional)", theme),
+              // SizedBox(height: 8.h),
+              // _buildTextField(
+              //   hint: "Additional details...",
+              //   onChanged: controller.setDescription,
+              //   maxLines: 4,
+              //   theme: theme,
+              // ),
+              // SizedBox(height: 20.h),
+
+              // Attachments
+              _buildSectionTitle("Attachments", theme),
+              SizedBox(height: 8.h),
+              buildAttachmentSection(controller, theme),
+              SizedBox(height: 24.h),
+
+              // Error Message
+              if (controller.errorMessage.isNotEmpty)
+                Container(
+                  padding: EdgeInsets.all(12.w),
+                  margin: EdgeInsets.only(bottom: 16.h),
+                  decoration: BoxDecoration(
+                    color: Colors.red[50],
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: Colors.red[200]!),
+                  ),
+                  child: Text(
+                    controller.errorMessage.value,
+                    style: TextStyle(color: Colors.red[700]),
+                  ),
+                ),
+
+              // Submit Button
+              AppButton(
+                showGradient: false,
+                text: "Submit",
+                isLoading: controller.isSubmitting.value,
+                onPressed: () {
+                  controller.submitLeaveApplication();
+                },
+              ),
+
+              // SizedBox(
+              //   width: double.infinity,
+              //   child: ElevatedButton(
+              //     onPressed: controller.isSubmitting.value
+              //         ? null
+              //         : controller.submitLeaveApplication,
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: kPrimaryColor,
+              //       foregroundColor: Colors.white,
+              //       padding: EdgeInsets.symmetric(vertical: 16.h),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(8.r),
+              //       ),
+              //     ),
+              //     child: controller.isSubmitting.value
+              //         ? SizedBox(
+              //             height: 20.h,
+              //             width: 20.w,
+              //             child: CircularProgressIndicator(
+              //               strokeWidth: 2,
+              //               valueColor: AlwaysStoppedAnimation<Color>(
+              //                 Colors.white,
+              //               ),
+              //             ),
+              //           )
+              //         : Text("Submit Application"),
+              //   ),
+              // ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title, TextTheme theme) {
+    return Text(
+      title,
+      style: theme.titleSmall?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: kBlackColor,
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required String hint,
+    required Function(String) onChanged,
+    int maxLines = 1,
+    required TextTheme theme,
+  }) {
+    return TextField(
+      onChanged: onChanged,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: theme.labelSmall,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.r),
+          borderSide: BorderSide(color: kPrimaryColor),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+      ),
+    );
+  }
+}

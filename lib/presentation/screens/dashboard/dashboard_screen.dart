@@ -1,4 +1,5 @@
 import 'package:arch_approve/core/constants/app_theme.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/apply_leaves_screen.dart';
 import 'package:arch_approve/presentation/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -18,8 +19,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   );
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Text('Search', style: optionStyle),
 
+    //ApplyLeavesScreen(),
     Text('Search', style: optionStyle),
     Text('Profile', style: optionStyle),
   ];
@@ -42,11 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               rippleColor: kPrimaryColor,
               haptic: false,
               tabBorderRadius: 15,
-              textStyle: TextStyle(
-                fontWeight: FontWeight.w900,
-                color: kWhiteColor,
-                fontSize: 14,
-              ),
+              textStyle: Theme.of(context).textTheme.displaySmall,
               hoverColor: kLightPrimaryColor,
               gap: 8,
               activeColor: kWhiteColor,
@@ -59,7 +56,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               color: kDarkGreyColor,
               tabs: [
                 GButton(icon: Icons.home, text: 'Home'),
-                GButton(icon: Icons.add, text: 'Apply Leave'),
+                // GButton(icon: Icons.add, text: 'Apply Leave'),
                 GButton(icon: Icons.history, text: 'LeaveStatus'),
                 GButton(icon: Icons.person, text: 'Profile'),
               ],

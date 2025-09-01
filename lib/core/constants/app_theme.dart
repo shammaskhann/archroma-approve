@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //fonts
 const String kFontFamily = "BankGothic";
-const String kSecondaryFontFamily = "Roboto";
+const String kSecondaryFontFamily = "BankGothic";
 // Core brand colors
 const Color kBlackColor = Color(0xFF000000);
 const Color kWhiteColor = Color(0xFFFFFFFF);
@@ -79,11 +79,54 @@ const TextStyle kPlaceholderTextStyle = TextStyle(
 ThemeData lightTheme = ThemeData(
   fontFamily: kFontFamily,
   brightness: Brightness.light,
+  textTheme: TextTheme(
+    //Body text for textfield
+    bodySmall: kBodyTextStyle.copyWith(color: kBlackColor, fontSize: 18),
+    //Main Headings
+    headlineLarge: kHeadingTextStyle.copyWith(
+      color: Colors.white,
+      fontSize: 28,
+      fontWeight: FontWeight.bold,
+    ),
+    headlineMedium: kHeadingTextStyle.copyWith(color: kBlackColor),
+    //Placeholder for the textfield grey text
+    titleSmall: kBodyTextStyle.copyWith(
+      color: kGreyColor,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+
+    //Placeholder for the textfield black text
+    titleMedium: kBodyTextStyle.copyWith(
+      color: kBlackColor,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+    ),
+
+    //App Buton Text
+    displayMedium: TextStyle(
+      fontFamily: kFontFamily,
+      fontSize: 15,
+      color: kWhiteColor,
+      fontWeight: FontWeight.w600,
+    ),
+
+    displaySmall: TextStyle(
+      fontFamily: kFontFamily,
+      fontSize: 12,
+      color: kWhiteColor,
+      fontWeight: FontWeight.w400,
+    ),
+    //Sub grey Text (below heading subtitle)
+    labelSmall: kBodyTextStyle.copyWith(color: kGreyColor),
+  ),
   primaryColor: kPrimaryColor,
   scaffoldBackgroundColor: kWhiteColor,
   appBarTheme: AppBarTheme(
-    backgroundColor: kPrimaryColor,
+    centerTitle: true,
+    backgroundColor: kLightPrimaryColor,
     foregroundColor: kWhiteColor,
+    titleTextStyle: kSubheadingTextStyle.copyWith(color: kWhiteColor),
     elevation: 0,
   ),
   inputDecorationTheme: InputDecorationTheme(
@@ -120,8 +163,9 @@ ThemeData darkTheme = ThemeData(
   primaryColor: kPrimaryColor,
   scaffoldBackgroundColor: kBlackColor,
   appBarTheme: AppBarTheme(
-    backgroundColor: kDarkPrimaryColor,
+    backgroundColor: kPrimaryColor,
     foregroundColor: kWhiteColor,
+    titleTextStyle: kSubheadingTextStyle.copyWith(color: kBlackColor),
     elevation: 0,
   ),
   inputDecorationTheme: InputDecorationTheme(
