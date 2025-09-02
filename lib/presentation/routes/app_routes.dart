@@ -4,6 +4,11 @@ import 'package:arch_approve/presentation/screens/leaves_history/history_screen.
 import 'package:arch_approve/presentation/screens/login/login_screen.dart';
 import 'package:arch_approve/presentation/screens/splash/splash_screen.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/apply_leaves_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/admin_dashboard_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/pages/admin_employees_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/pages/admin_requests_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/pages/admin_stats_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/pages/admin_calendar_screen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
@@ -29,6 +34,38 @@ class AppRoutes {
         transitionDuration: const Duration(milliseconds: 500),
         transition: Transition.fadeIn,
       ),
+      // Admin routes
+      GetPage(
+        name: AppRoutesConstant.adminDashboard,
+        page: () => const AdminDashboardScreen(),
+        transitionDuration: const Duration(milliseconds: 500),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: AppRoutesConstant.adminEmployees,
+        page: () => const AdminEmployeesScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: AppRoutesConstant.adminRequests,
+        page: () => const AdminRequestsScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: AppRoutesConstant.adminStats,
+        page: () => const AdminStatsScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: AppRoutesConstant.adminCalendar,
+        page: () => const AdminCalendarScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
+
       // routes.dart
       GetPage(
         name: AppRoutesConstant.applyLeave,

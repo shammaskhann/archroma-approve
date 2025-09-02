@@ -49,8 +49,12 @@ class LoginController extends GetxController {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
-      if (user!.role == "employee") {
+      if (user!.role.toLowerCase() == "employee") {
         Get.offAllNamed(AppRoutesConstant.dashboard);
+      } else if (user.role.toLowerCase() == "admin" ||
+          user.role.toLowerCase() == "it" ||
+          user.role.toLowerCase() == "manager") {
+        Get.offAllNamed(AppRoutesConstant.adminDashboard);
       } else {
         Get.offAllNamed(AppRoutesConstant.dashboard);
       }

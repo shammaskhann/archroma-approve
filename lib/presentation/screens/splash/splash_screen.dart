@@ -31,12 +31,12 @@ class _SplashScreenState extends State<SplashScreen> {
     final role = await UserPref.getRole();
     log("ROLE: $role $uid");
     if (role == 'admin' && uid != null) {
-      Get.offAllNamed(AppRoutesConstant.dashboard);
+      Get.offAllNamed(AppRoutesConstant.adminDashboard);
       final user = await FirebaseDataService().getUserData(uid);
       if (user != null) {
         UserPref.saveData(user);
       }
-    } else if (role == "Employee" && uid != null) {
+    } else if (role == "employee" && uid != null) {
       final user = await FirebaseDataService().getUserData(uid);
       if (user != null) {
         UserPref.saveData(user);

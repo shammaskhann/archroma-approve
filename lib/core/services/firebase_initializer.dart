@@ -4,6 +4,7 @@ import 'package:arch_approve/core/services/notification/firebase_notification.da
 import 'package:arch_approve/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 
 class FirebaseInitializer {
   static Future<void> initialize() async {
@@ -12,7 +13,7 @@ class FirebaseInitializer {
     );
     await Future.delayed(Duration(seconds: 2));
 
-    if (Platform.isIOS || Platform.isAndroid) {
+    if (!kIsWeb) {
       // Background handler
       FirebaseMessaging.onBackgroundMessage(
         _firebaseMessagingBackgroundHandler,
