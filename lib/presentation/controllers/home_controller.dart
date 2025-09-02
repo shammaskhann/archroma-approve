@@ -1,3 +1,4 @@
+import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:get/get.dart';
 import 'package:arch_approve/core/services/firebase/leave_services.dart';
 import 'package:arch_approve/data/models/Leave_Model.dart';
@@ -101,12 +102,7 @@ class HomeController extends GetxController {
 
   /// Navigate to view all leaves
   void viewAllLeaves() {
-    // You can implement navigation to a leaves history screen
-    Get.snackbar(
-      'View All Leaves',
-      'Navigate to leaves history screen',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    Get.toNamed(AppRoutesConstant.history);
   }
 
   /// Navigate to leave details

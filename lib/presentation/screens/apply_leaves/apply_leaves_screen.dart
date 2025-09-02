@@ -9,12 +9,17 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ApplyLeavesScreen extends StatelessWidget {
-  const ApplyLeavesScreen({super.key});
+  final String leaveType;
+  const ApplyLeavesScreen({super.key, this.leaveType = ""});
 
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ApplyLeaveController());
     TextTheme theme = Theme.of(context).textTheme;
+
+    if (leaveType != "") {
+      controller.setLeaveType(leaveType);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -43,29 +48,50 @@ class ApplyLeavesScreen extends StatelessWidget {
               SizedBox(height: 20.h),
 
               // Date Selection
-              _buildSectionTitle("Date Range", theme),
+              Obx(() {
+                if (controller.selectedLeaveType.value == "Full Day" ||
+                    controller.selectedLeaveType.value == "Half Day") {
+                  // Show only one Date (assign to both start & end)
+                  return _buildSectionTitle("Select Date", theme);
+                } else {
+                  return _buildSectionTitle("Date Range", theme);
+                }
+              }),
               SizedBox(height: 8.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: buildDateField(
-                      "Start Date",
-                      controller.startDate,
-                      (date) => controller.setStartDate(date),
-                      theme,
-                    ),
-                  ),
-                  SizedBox(width: 12.w),
-                  Expanded(
-                    child: buildDateField(
-                      "End Date",
-                      controller.endDate,
-                      (date) => controller.setEndDate(date),
-                      theme,
-                    ),
-                  ),
-                ],
-              ),
+              Obx(() {
+                if (controller.selectedLeaveType.value == "Full Day" ||
+                    controller.selectedLeaveType.value == "Half Day") {
+                  // Show only one Date (assign to both start & end)
+                  return buildDateField("Select Date", controller.startDate, (
+                    date,
+                  ) {
+                    controller.setStartDate(date);
+                    controller.setEndDate(date); // same as start
+                  }, theme);
+                } else {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: buildDateField(
+                          "Start Date",
+                          controller.startDate,
+                          (date) => controller.setStartDate(date),
+                          theme,
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: buildDateField(
+                          "End Date",
+                          controller.endDate,
+                          (date) => controller.setEndDate(date),
+                          theme,
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              }),
               SizedBox(height: 20.h),
 
               // Reason
@@ -78,17 +104,6 @@ class ApplyLeavesScreen extends StatelessWidget {
                 theme: theme,
               ),
               SizedBox(height: 20.h),
-
-              // Description
-              // _buildSectionTitle("Description (Optional)", theme),
-              // SizedBox(height: 8.h),
-              // _buildTextField(
-              //   hint: "Additional details...",
-              //   onChanged: controller.setDescription,
-              //   maxLines: 4,
-              //   theme: theme,
-              // ),
-              // SizedBox(height: 20.h),
 
               // Attachments
               _buildSectionTitle("Attachments", theme),
@@ -121,35 +136,6 @@ class ApplyLeavesScreen extends StatelessWidget {
                   controller.submitLeaveApplication();
                 },
               ),
-
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: ElevatedButton(
-              //     onPressed: controller.isSubmitting.value
-              //         ? null
-              //         : controller.submitLeaveApplication,
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: kPrimaryColor,
-              //       foregroundColor: Colors.white,
-              //       padding: EdgeInsets.symmetric(vertical: 16.h),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(8.r),
-              //       ),
-              //     ),
-              //     child: controller.isSubmitting.value
-              //         ? SizedBox(
-              //             height: 20.h,
-              //             width: 20.w,
-              //             child: CircularProgressIndicator(
-              //               strokeWidth: 2,
-              //               valueColor: AlwaysStoppedAnimation<Color>(
-              //                 Colors.white,
-              //               ),
-              //             ),
-              //           )
-              //         : Text("Submit Application"),
-              //   ),
-              // ),
             ],
           ),
         ),

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/core/constants/app_theme.dart';
+import 'package:arch_approve/core/services/firebase/data_service.dart';
 import 'package:arch_approve/core/services/shared_pref/local_Storage_service.dart';
 import 'package:arch_approve/presentation/components/custom_loader.dart';
 import 'package:arch_approve/presentation/screens/login/login_screen.dart';
@@ -31,7 +32,15 @@ class _SplashScreenState extends State<SplashScreen> {
     log("ROLE: $role $uid");
     if (role == 'admin' && uid != null) {
       Get.offAllNamed(AppRoutesConstant.dashboard);
+      final user = await FirebaseDataService().getUserData(uid);
+      if (user != null) {
+        UserPref.saveData(user);
+      }
     } else if (role == "Employee" && uid != null) {
+      final user = await FirebaseDataService().getUserData(uid);
+      if (user != null) {
+        UserPref.saveData(user);
+      }
       Get.offAllNamed(AppRoutesConstant.dashboard);
     } else {
       Get.offAllNamed(AppRoutesConstant.login);
@@ -47,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/icons/logo.png', width: 250),
+            Image.asset('assets/icons/logo.png', width: 220),
             //Linear Progress Indicator
             DotsLoader(kLightPrimaryColor),
           ],

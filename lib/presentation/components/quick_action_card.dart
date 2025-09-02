@@ -47,7 +47,7 @@ class QuickActionCard extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     icon: Icons.calendar_today,
-                    title: 'Apply Leave',
+                    title: 'Full Day',
                     subtitle: 'Full day leave',
                     color: Colors.green,
                     onTap: () => _navigateToApplyLeave(context),
@@ -83,10 +83,10 @@ class QuickActionCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: _buildActionButton(
-                    icon: Icons.work_off,
-                    title: 'Work From Home',
-                    subtitle: 'Remote work',
-                    color: Colors.purple,
+                    icon: Icons.emergency,
+                    title: 'Emergency',
+                    subtitle: 'Emergency leave',
+                    color: Colors.red,
                     onTap: () => _navigateToApplyWFH(context),
                   ),
                 ),
@@ -155,30 +155,21 @@ class QuickActionCard extends StatelessWidget {
   }
 
   void _navigateToApplyLeave(BuildContext context) {
-    Get.toNamed(AppRoutesConstant.applyLeave);
+    Get.toNamed(AppRoutesConstant.applyLeave, arguments: "Full Day");
   }
 
   void _navigateToApplyHalfDay(BuildContext context) {
     // Navigate to apply leave with half day pre-selected
-    Get.toNamed(
-      AppRoutesConstant.applyLeave,
-      arguments: {'leaveType': 'Half Day'},
-    );
+    Get.toNamed(AppRoutesConstant.applyLeave, arguments: "Half Day");
   }
 
   void _navigateToApplySickLeave(BuildContext context) {
     // Navigate to apply leave with sick leave pre-selected
-    Get.toNamed(
-      AppRoutesConstant.applyLeave,
-      arguments: {'leaveType': 'Sick Leave'},
-    );
+    Get.toNamed(AppRoutesConstant.applyLeave, arguments: 'Medical');
   }
 
   void _navigateToApplyWFH(BuildContext context) {
     // Navigate to apply leave with work from home pre-selected
-    Get.toNamed(
-      AppRoutesConstant.applyLeave,
-      arguments: {'leaveType': 'Work From Home'},
-    );
+    Get.toNamed(AppRoutesConstant.applyLeave, arguments: "Emergency");
   }
 }

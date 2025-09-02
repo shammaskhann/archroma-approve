@@ -1,9 +1,11 @@
+import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/core/constants/app_theme.dart';
 import 'package:arch_approve/core/services/shared_pref/local_Storage_service.dart';
 import 'package:arch_approve/presentation/components/custom_loader.dart';
 import 'package:arch_approve/presentation/components/quick_action_card.dart';
 import 'package:arch_approve/presentation/components/recent_request_card.dart';
 import 'package:arch_approve/presentation/controllers/home_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,8 +26,9 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildWelcomeSetion(context),
+              SizedBox(height: 5),
               const QuickActionCard(),
-
+              SizedBox(height: 5),
               // Recent Request Card
               Obx(
                 () => RecentRequestCard(
@@ -52,7 +55,7 @@ class HomeScreen extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
-      height: height * 0.3,
+      height: height * 0.28,
       width: width,
       decoration: BoxDecoration(
         gradient: kL,
@@ -72,49 +75,58 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(height: 40),
-          Text(
-            "Home",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                //Avatar (person icon) and below "Welcome, back" next line "Adnan Ahmed"
-                SizedBox(height: 20),
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: kWhiteColor,
-                  child: Icon(Icons.person, size: 50, color: kDarkGreyColor),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Welcome, back",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kWhiteColor,
-                  ),
-                ),
-                SizedBox(height: 5),
-                FutureBuilder(
-                  future: UserPref.getName(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return DotsLoader(kWhiteColor);
-                    }
-                    return Text(
-                      "Shammas Khan",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: kWhiteColor,
-                      ),
-                    );
-                  },
-                ),
-              ],
+          Padding(
+            padding: const EdgeInsets.only(right: 15.0),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () {
+                  final _auth = FirebaseAuth.instance;
+                  UserPref.clearData();
+                  _auth.signOut();
+                  Get.offAllNamed(AppRoutesConstant.login);
+                },
+                child: Icon(Icons.logout, color: kWhiteColor),
+              ),
             ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              //Avatar (person icon) and below "Welcome, back" next line "Adnan Ahmed"
+              // SizedBox(height: 20),
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: kWhiteColor,
+                child: Icon(Icons.person, size: 50, color: kDarkGreyColor),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "Welcome, back",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: kWhiteColor,
+                ),
+              ),
+              SizedBox(height: 5),
+              FutureBuilder(
+                future: UserPref.getName(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return DotsLoader(kWhiteColor);
+                  }
+                  return Text(
+                    "Shammas Khan",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: kWhiteColor,
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),

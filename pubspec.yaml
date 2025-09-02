@@ -47,6 +47,8 @@ dependencies:
   appwrite: ^18.0.0
   file_picker: ^10.3.2
   flutter_web_auth_2: ^4.1.0
+  intl: ^0.20.2
+  open_file: ^3.5.10
 
 dev_dependencies:
   flutter_test:
@@ -62,16 +64,16 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/icons/logo.png
+  image: assets/icons/logo-bg.png
   color_dark: "#FFFFFF"
-  image_dark: assets/icons/logo.png
+  image_dark: assets/icons/logo-bg.png
 
   # add this
   android_12:
     icon_background_color: "#FFFFFF"
-    image: assets/icons/logo.png
+    image: assets/icons/logo-bg.png
     icon_background_color_dark: "#FFFFFF"
-    image_dark: assets/icons/logo.png
+    image_dark: assets/icons/logo-bg.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

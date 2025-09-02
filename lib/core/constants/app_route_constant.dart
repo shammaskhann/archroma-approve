@@ -1,7 +1,7 @@
 class AppRoutesConstant {
   static const String notification = "/notification";
   static const String splash = "/splash";
-  static String history = "/history";
+  static const String history = "/history";
   static const String login = "/login";
   static const String otp = "/otp";
   static const String updatePassword = "/update-password";

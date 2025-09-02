@@ -1,8 +1,10 @@
 import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/presentation/screens/dashboard/dashboard_screen.dart';
+import 'package:arch_approve/presentation/screens/leaves_history/history_screen.dart';
 import 'package:arch_approve/presentation/screens/login/login_screen.dart';
 import 'package:arch_approve/presentation/screens/splash/splash_screen.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/apply_leaves_screen.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 
@@ -27,9 +29,19 @@ class AppRoutes {
         transitionDuration: const Duration(milliseconds: 500),
         transition: Transition.fadeIn,
       ),
+      // routes.dart
       GetPage(
         name: AppRoutesConstant.applyLeave,
-        page: () => const ApplyLeavesScreen(),
+        page: () {
+          final args = Get.arguments as String?; // retrieve the argument
+          return ApplyLeavesScreen(leaveType: args ?? "");
+        },
+        transitionDuration: const Duration(milliseconds: 500),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
+        name: AppRoutesConstant.history,
+        page: () => const LeaveHistoryScreen(),
         transitionDuration: const Duration(milliseconds: 500),
         transition: Transition.fadeIn,
       ),
