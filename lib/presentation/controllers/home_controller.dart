@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:arch_approve/core/constants/app_route_constant.dart';
+import 'package:arch_approve/core/services/shared_pref/local_Storage_service.dart';
 import 'package:get/get.dart';
 import 'package:arch_approve/core/services/firebase/leave_services.dart';
 import 'package:arch_approve/data/models/Leave_Model.dart';
@@ -13,11 +16,54 @@ class HomeController extends GetxController {
   final RxList<LeaveModel> allLeaves = <LeaveModel>[].obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
+  final RxBool isMainLoading = false.obs;
+
+  final RxInt annual = 0.obs;
+  final RxInt casual = 0.obs;
+  final RxInt sick = 0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    _loadRecentLeave();
+    initialize();
+  }
+
+  initialize() async {
+    isMainLoading.value = true;
+    await _loadUserRemainingLeaves();
+    await _loadRecentLeave();
+    isMainLoading.value = false;
+  }
+
+  Future<void> _loadUserRemainingLeaves() async {
+    try {
+      isLoading.value = true;
+      errorMessage.value = '';
+
+      final uid = _auth.currentUser?.uid;
+      if (uid == null) {
+        errorMessage.value = 'User not authenticated';
+        UserPref.clearData();
+        Get.offAllNamed(AppRoutesConstant.login);
+        return;
+      }
+
+      // Get user's leaves and find the most recent one
+      final userLeaves = await _leavesService.getUserRemainingLeaveStats(uid);
+      log(userLeaves?.casualLeaves.toString() ?? "");
+      log(userLeaves?.annualLeaves.toString() ?? "");
+      log(userLeaves?.sickLeaves.toString() ?? "");
+      if (userLeaves != null) {
+        annual.value = userLeaves.annualLeaves;
+        casual.value = userLeaves.casualLeaves;
+        sick.value = userLeaves.sickLeaves;
+      }
+    } catch (e) {
+      errorMessage.value = 'Error loading Remaing Leaves Stats: $e';
+      print('Error loading recent leave: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   /// Load the most recent leave application
@@ -89,6 +135,8 @@ class HomeController extends GetxController {
   /// Get the most recent leave
   LeaveModel? get getRecentLeave => recentLeave.value;
 
+  bool get getMainLoading => isMainLoading.value;
+
   /// Get loading state
   bool get getIsLoading => isLoading.value;
 
@@ -108,11 +156,8 @@ class HomeController extends GetxController {
   /// Navigate to leave details
   void viewLeaveDetails(LeaveModel leave) {
     // You can implement navigation to leave details screen
-    Get.snackbar(
-      'Leave Details',
-      'Viewing details for ${leave.leaveType}',
-      snackPosition: SnackPosition.BOTTOM,
-    );
+    // Note: This method needs BuildContext to show SnackBar
+    // Consider moving this logic to the UI layer or using a different approach
   }
 
   /// Get formatted date for display

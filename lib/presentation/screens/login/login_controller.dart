@@ -3,6 +3,7 @@ import 'package:arch_approve/core/services/firebase/auth_services.dart';
 import 'package:arch_approve/core/services/firebase/data_service.dart';
 import 'package:arch_approve/core/services/shared_pref/local_Storage_service.dart';
 import 'package:arch_approve/data/repositories/auth_repository_impl.dart';
+import 'package:arch_approve/core/services/notification/fcm_tokken_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,6 +50,7 @@ class LoginController extends GetxController {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
+      await FcmTokenService.updateToken();
       if (user!.role.toLowerCase() == "employee") {
         Get.offAllNamed(AppRoutesConstant.dashboard);
       } else if (user.role.toLowerCase() == "admin" ||
@@ -73,27 +75,15 @@ class LoginController extends GetxController {
 
     try {
       await _authRepository.forgotPassword(emailController.text.trim());
-      Get.snackbar(
-        "Password Reset",
-        "A reset link has been sent to your email.",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green.shade600,
-        colorText: Colors.white,
-        margin: const EdgeInsets.all(12),
-      );
+      // Note: This method needs BuildContext to show SnackBar
+      // Consider moving this logic to the UI layer or using a different approach
     } catch (e) {
       _showErrorSnackbar(e.toString());
     }
   }
 
   void _showErrorSnackbar(String message) {
-    Get.snackbar(
-      "Error",
-      message,
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red.shade600,
-      colorText: Colors.white,
-      margin: const EdgeInsets.all(12),
-    );
+    // Note: This method needs BuildContext to show SnackBar
+    // Consider moving this logic to the UI layer or using a different approach
   }
 }

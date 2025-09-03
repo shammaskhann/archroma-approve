@@ -12,7 +12,6 @@ class FcmSenderService {
     String title,
     String body,
     Map<String, String> data,
-    Map<String, dynamic> serviceAccountJson,
   ) async {
     try {
       final serverKey = await FcmAuthService.getAccessToken();

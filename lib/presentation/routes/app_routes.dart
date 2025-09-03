@@ -2,12 +2,16 @@ import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/presentation/screens/dashboard/dashboard_screen.dart';
 import 'package:arch_approve/presentation/screens/leaves_history/history_screen.dart';
 import 'package:arch_approve/presentation/screens/login/login_screen.dart';
+import 'package:arch_approve/presentation/screens/login/forgot_password_screen.dart';
 import 'package:arch_approve/presentation/screens/splash/splash_screen.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/apply_leaves_screen.dart';
+import 'package:arch_approve/presentation/screens/profile/update_profile_screen.dart';
+import 'package:arch_approve/presentation/screens/profile/change_password_screen.dart';
+import 'package:arch_approve/presentation/screens/profile/terms_conditions_screen.dart';
 import 'package:arch_approve/presentation/screens_admin/admin_dashboard_screen.dart';
 import 'package:arch_approve/presentation/screens_admin/pages/admin_employees_screen.dart';
-import 'package:arch_approve/presentation/screens_admin/pages/admin_requests_screen.dart';
-import 'package:arch_approve/presentation/screens_admin/pages/admin_stats_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/pages/admin_home_screen.dart';
+import 'package:arch_approve/presentation/screens_admin/pages/admin_request_screen.dart';
 import 'package:arch_approve/presentation/screens_admin/pages/admin_calendar_screen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
@@ -28,6 +32,13 @@ class AppRoutes {
         transitionDuration: const Duration(milliseconds: 500),
         transition: Transition.fadeIn,
       ),
+
+      GetPage(
+        name: AppRoutesConstant.forgotPassword,
+        page: () => const ForgotPasswordScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
       GetPage(
         name: AppRoutesConstant.dashboard,
         page: () => const DashboardScreen(),
@@ -36,8 +47,22 @@ class AppRoutes {
       ),
       // Admin routes
       GetPage(
+        name: AppRoutesConstant.dashboard,
+        page: () {
+          final args = Get.arguments as Map<String, dynamic>? ?? {};
+          final index = args["index"] ?? 0;
+          return DashboardScreen(initialIndex: index);
+        },
+        transitionDuration: const Duration(milliseconds: 500),
+        transition: Transition.fadeIn,
+      ),
+      GetPage(
         name: AppRoutesConstant.adminDashboard,
-        page: () => const AdminDashboardScreen(),
+        page: () {
+          final args = Get.arguments as Map<String, dynamic>? ?? {};
+          final index = args["index"] ?? 0;
+          return AdminDashboardScreen(initialIndex: index);
+        },
         transitionDuration: const Duration(milliseconds: 500),
         transition: Transition.fadeIn,
       ),
@@ -48,20 +73,20 @@ class AppRoutes {
         transition: Transition.fadeIn,
       ),
       GetPage(
-        name: AppRoutesConstant.adminRequests,
-        page: () => const AdminRequestsScreen(),
+        name: AppRoutesConstant.adminHome,
+        page: () => const AdminHomeScreen(),
         transitionDuration: const Duration(milliseconds: 300),
         transition: Transition.fadeIn,
       ),
       GetPage(
-        name: AppRoutesConstant.adminStats,
-        page: () => const AdminStatsScreen(),
+        name: AppRoutesConstant.adminRequest,
+        page: () => const AdminRequestScreen(),
         transitionDuration: const Duration(milliseconds: 300),
         transition: Transition.fadeIn,
       ),
       GetPage(
         name: AppRoutesConstant.adminCalendar,
-        page: () => const AdminCalendarScreen(),
+        page: () => const AdminProfileScreen(),
         transitionDuration: const Duration(milliseconds: 300),
         transition: Transition.fadeIn,
       ),
@@ -80,6 +105,28 @@ class AppRoutes {
         name: AppRoutesConstant.history,
         page: () => const LeaveHistoryScreen(),
         transitionDuration: const Duration(milliseconds: 500),
+        transition: Transition.fadeIn,
+      ),
+
+      // Profile Routes
+      GetPage(
+        name: AppRoutesConstant.updateProfile,
+        page: () => const UpdateProfileScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
+
+      GetPage(
+        name: AppRoutesConstant.changePassword,
+        page: () => const ChangePasswordScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
+        transition: Transition.fadeIn,
+      ),
+
+      GetPage(
+        name: AppRoutesConstant.terms,
+        page: () => const TermsConditionsScreen(),
+        transitionDuration: const Duration(milliseconds: 300),
         transition: Transition.fadeIn,
       ),
     ];

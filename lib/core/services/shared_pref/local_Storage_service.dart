@@ -63,4 +63,20 @@ class UserPref {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_roleKey);
   }
+
+  // Individual setters for profile updates
+  static Future<void> setName(String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_nameKey, name);
+  }
+
+  static Future<void> setEmail(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_emailKey, email);
+  }
+
+  static Future<void> setContactNo(String contactNo) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_contactNoKey, contactNo);
+  }
 }

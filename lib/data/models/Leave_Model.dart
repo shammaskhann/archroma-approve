@@ -18,6 +18,9 @@ class LeaveModel {
   static const String _approvedByKey = 'approvedBy';
   static const String _approvedAtKey = 'approvedAt';
   static const String _rejectionReasonKey = 'rejectionReason';
+  static const String _leaveDurationKey = 'leaveDuration';
+  static const String _shouldDeductKey = 'shouldDeduct';
+  static const String _deductFormKey = 'deductForm';
 
   final String? id;
   final String leaveType;
@@ -33,6 +36,9 @@ class LeaveModel {
   final String? approvedBy;
   final DateTime? approvedAt;
   final String? rejectionReason;
+  final String leaveDuration;
+  final bool shouldDeduct;
+  final String deductForm;
 
   LeaveModel({
     this.id,
@@ -49,9 +55,11 @@ class LeaveModel {
     this.approvedBy,
     this.approvedAt,
     this.rejectionReason,
+    required this.leaveDuration,
+    required this.shouldDeduct,
+    required this.deductForm,
   });
 
-  /// From JSON
   factory LeaveModel.fromJson(Map<String, dynamic> json) {
     return LeaveModel(
       id: json[_idKey],
@@ -68,6 +76,9 @@ class LeaveModel {
       approvedBy: json[_approvedByKey],
       approvedAt: _parseDateTime(json[_approvedAtKey]),
       rejectionReason: json[_rejectionReasonKey],
+      leaveDuration: json[_leaveDurationKey] ?? '',
+      shouldDeduct: json[_shouldDeductKey] ?? true,
+      deductForm: json[_deductFormKey] ?? '',
     );
   }
 
@@ -88,10 +99,12 @@ class LeaveModel {
       if (approvedBy != null) _approvedByKey: approvedBy,
       if (approvedAt != null) _approvedAtKey: approvedAt!.toIso8601String(),
       if (rejectionReason != null) _rejectionReasonKey: rejectionReason,
+      _leaveDurationKey: leaveDuration,
+      _shouldDeductKey: shouldDeduct,
+      _deductFormKey: deductForm,
     };
   }
 
-  /// From Firestore DocumentSnapshot
   factory LeaveModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data();
     if (data == null) throw Exception('Document data is null');
@@ -111,13 +124,15 @@ class LeaveModel {
       approvedBy: data[_approvedByKey],
       approvedAt: _parseDateTime(data[_approvedAtKey]),
       rejectionReason: data[_rejectionReasonKey],
+      leaveDuration: data[_leaveDurationKey] ?? '',
+      shouldDeduct: data[_shouldDeductKey] ?? true,
+      deductForm: data[_deductFormKey] ?? '',
     );
   }
 
   /// To Firestore (same as JSON)
   Map<String, dynamic> toFirestore() => toJson();
 
-  /// Create a copy with updated fields
   LeaveModel copyWith({
     String? id,
     String? leaveType,
@@ -133,6 +148,9 @@ class LeaveModel {
     String? approvedBy,
     DateTime? approvedAt,
     String? rejectionReason,
+    String? leaveDuration,
+    bool? shouldDeduct,
+    String? deductForm,
   }) {
     return LeaveModel(
       id: id ?? this.id,
@@ -149,6 +167,9 @@ class LeaveModel {
       approvedBy: approvedBy ?? this.approvedBy,
       approvedAt: approvedAt ?? this.approvedAt,
       rejectionReason: rejectionReason ?? this.rejectionReason,
+      leaveDuration: leaveDuration ?? this.leaveDuration,
+      shouldDeduct: shouldDeduct ?? this.shouldDeduct,
+      deductForm: deductForm ?? this.deductForm,
     );
   }
 

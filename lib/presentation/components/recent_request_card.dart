@@ -1,3 +1,4 @@
+import 'package:arch_approve/core/constants/app_theme.dart';
 import 'package:arch_approve/core/utils/formate_date.dart';
 import 'package:arch_approve/core/utils/status_chip.dart';
 import 'package:arch_approve/presentation/components/attachment_info.dart';
@@ -25,7 +26,7 @@ class RecentRequestCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.history, color: Colors.grey.shade700, size: 24),
+                  Icon(Icons.history, color: kPrimaryColor, size: 24),
                   const SizedBox(width: 8),
                   Text(
                     'Recent Request',
@@ -192,12 +193,17 @@ class RecentRequestCard extends StatelessWidget {
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
               shape: RoundedRectangleBorder(
+                side: BorderSide(color: kPrimaryColor),
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
             child: const Text(
               'Apply for Leave',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: kPrimaryColor,
+              ),
             ),
           ),
         ),

@@ -15,15 +15,33 @@ Widget buildLeaveTypeDropdown(
   TextTheme theme,
 ) {
   final leaveTypes = [
-    {'label': 'Full Day', 'icon': Icons.work},
-    {'label': 'Half Day', 'icon': Icons.schedule},
-    {'label': 'Annual', 'icon': Icons.event},
-    {'label': 'Medical', 'icon': Icons.local_hospital},
-    {'label': 'Emergency', 'icon': Icons.warning},
-    {'label': 'Maternity', 'icon': Icons.child_friendly},
-    {'label': 'Hospitalization', 'icon': Icons.hotel},
-    {'label': 'Marriage', 'icon': Icons.favorite},
-    {'label': 'Personal', 'icon': Icons.person},
+    {'label': 'Annual', 'icon': Icons.event, 'deductFrom': 'annual_leaves'},
+    {
+      'label': 'Casual',
+      'icon': Icons.access_time, // ⏱️ Or any suitable icon
+      'deductFrom': 'casual_leaves',
+    },
+    {
+      'label': 'Medical',
+      'icon': Icons.local_hospital,
+      'deductFrom': 'sick_leaves',
+    },
+    {
+      'label': 'Emergency',
+      'icon': Icons.warning,
+      'deductFrom': 'casual_leaves',
+    },
+    {
+      'label': 'Maternity',
+      'icon': Icons.child_friendly,
+      'deductFrom': 'special',
+    },
+    {
+      'label': 'Hospitalization',
+      'icon': Icons.hotel,
+      'deductFrom': 'sick_leaves',
+    },
+    {'label': 'Marriage', 'icon': Icons.favorite, 'deductFrom': 'special'},
   ];
 
   return GestureDetector(
@@ -80,6 +98,9 @@ Widget buildLeaveTypeDropdown(
                         ),
                         onTap: () {
                           controller.setLeaveType(item['label'] as String);
+                          controller.setDeductForm(
+                            item['deductFrom'] as String,
+                          );
                           Navigator.pop(context);
                         },
                       );

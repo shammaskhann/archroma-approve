@@ -140,6 +140,11 @@ class AdminEmployeesScreen extends StatelessWidget {
       builder: (context, constraints) {
         // Mobile layout
         return Scaffold(
+          appBar: AppBar(
+            title: const Text('Employee Dashboard'),
+            backgroundColor: kPrimaryColor,
+            foregroundColor: Colors.white,
+          ),
           body: Obx(() {
             return ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),

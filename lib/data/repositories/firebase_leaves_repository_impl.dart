@@ -34,15 +34,15 @@ class FirebaseLeavesRepositoryImpl implements FirebaseLeavesRepository {
 
   @override
   Future<void> updateLeaveStatus(
-    String leaveId,
+    LeaveModel leave,
     LeaveStatus status, {
     String? approvedBy,
     String? rejectionReason,
   }) {
     return _firebaseLeavesService.updateLeaveStatus(
-      leaveId,
+      leave,
       status,
-      approvedBy: approvedBy,
+      // approvedBy: approvedBy,
       rejectionReason: rejectionReason,
     );
   }
@@ -73,6 +73,9 @@ class FirebaseLeavesRepositoryImpl implements FirebaseLeavesRepository {
     required String reason,
     required String description,
     Map<String, dynamic>? attachment,
+    required String leaveDuration,
+    required bool shouldDeduct,
+    required String deductForm,
   }) {
     return _firebaseLeavesService.createLeaveApplicationWithUser(
       leaveType: leaveType,
@@ -81,6 +84,9 @@ class FirebaseLeavesRepositoryImpl implements FirebaseLeavesRepository {
       reason: reason,
       description: description,
       attachment: attachment,
+      leaveDuration: leaveDuration,
+      shouldDeduct: shouldDeduct,
+      deductForm: deductForm,
     );
   }
 

@@ -26,6 +26,9 @@ class LeavesServiceUsageExample {
           'uploadedAt': DateTime.now().toIso8601String(),
           'appwriteBucketId': 'attachments',
         },
+        leaveDuration: "Full Day",
+        shouldDeduct: true,
+        deductForm: "annual_leaves",
       );
 
       print('Leave application submitted successfully with ID: $leaveId');
@@ -55,7 +58,7 @@ class LeavesServiceUsageExample {
 
   /// Example of how to approve/reject a leave application
   static Future<void> approveLeaveExample(
-    String leaveId,
+    LeaveModel leave,
     String approverName,
   ) async {
     try {
@@ -63,9 +66,9 @@ class LeavesServiceUsageExample {
 
       // Approve a leave application
       await leavesService.updateLeaveStatus(
-        leaveId,
+        leave,
         LeaveStatus.accepted,
-        approvedBy: approverName,
+        // approvedBy: approverName,
       );
 
       print('Leave application approved successfully');
@@ -76,7 +79,7 @@ class LeavesServiceUsageExample {
 
   /// Example of how to reject a leave application
   static Future<void> rejectLeaveExample(
-    String leaveId,
+    LeaveModel leave,
     String rejectionReason,
   ) async {
     try {
@@ -84,7 +87,7 @@ class LeavesServiceUsageExample {
 
       // Reject a leave application
       await leavesService.updateLeaveStatus(
-        leaveId,
+        leave,
         LeaveStatus.rejected,
         rejectionReason: rejectionReason,
       );
@@ -177,6 +180,9 @@ class LeavesServiceUsageExample {
           deviceToken: 'token123',
           contactNo: '+1234567890',
           role: 'Employee',
+          casualLeaves: 20,
+          annualLeaves: 20,
+          sickLeaves: 20,
         ),
         attachment: {
           'fileId': 'appwrite_file_id_456',
@@ -187,6 +193,9 @@ class LeavesServiceUsageExample {
         },
         submittedAt: DateTime.now(),
         updatedAt: DateTime.now(),
+        leaveDuration: "Full Day",
+        shouldDeduct: true,
+        deductForm: "annual_leaves",
       );
 
       // Submit the leave application
@@ -217,6 +226,9 @@ class LeavesServiceUsageExample {
         deviceToken: 'token456',
         contactNo: '+1234567890',
         role: 'Employee',
+        casualLeaves: 20,
+        annualLeaves: 20,
+        sickLeaves: 20,
       ),
       attachment: {
         'fileId': 'appwrite_file_id_789',
@@ -227,6 +239,9 @@ class LeavesServiceUsageExample {
       },
       submittedAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      leaveDuration: "Full Day",
+      shouldDeduct: true,
+      deductForm: "annual_leaves",
     );
 
     // Check if it's an Appwrite attachment

@@ -12,6 +12,7 @@ class ApplyLeaveController extends GetxController {
 
   // Form fields
   final RxString selectedLeaveType = ''.obs;
+  final RxString deductForm = ''.obs;
   final RxString startDate = ''.obs;
   final RxString endDate = ''.obs;
   final RxString reason = ''.obs;
@@ -22,6 +23,19 @@ class ApplyLeaveController extends GetxController {
   final Rxn<Map<String, dynamic>> uploadedFile = Rxn<Map<String, dynamic>>();
   final RxBool isUploading = false.obs;
   final RxBool isSubmitting = false.obs;
+
+  final RxString selectedLeaveDuration = ''.obs;
+  final RxBool shouldDeduct = true.obs;
+
+  void setLeaveDuration(String label, bool deduct) {
+    selectedLeaveDuration.value = label;
+    shouldDeduct.value = deduct;
+
+    // Reset dates if needed
+    if (label == 'Half Day' || label == 'Full Day') {
+      endDate.value = startDate.value;
+    }
+  }
 
   // Error handling
   final RxString errorMessage = ''.obs;
@@ -97,11 +111,8 @@ class ApplyLeaveController extends GetxController {
     } catch (e) {
       errorMessage.value = 'Error uploading file: $e';
       log(errorMessage.value);
-      Get.snackbar(
-        'Error',
-        'Failed to upload file ',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // Note: This method needs BuildContext to show SnackBar
+      // Consider moving this logic to the UI layer or using a different approach
     } finally {
       isUploading.value = false;
     }
@@ -110,11 +121,8 @@ class ApplyLeaveController extends GetxController {
   /// Submit leave application
   Future<void> submitLeaveApplication() async {
     if (!validateForm()) {
-      Get.snackbar(
-        'Validation Error',
-        errorMessage.value,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // Note: This method needs BuildContext to show SnackBar
+      // Consider moving this logic to the UI layer or using a different approach
       return;
     }
 
@@ -126,6 +134,16 @@ class ApplyLeaveController extends GetxController {
       if (selectedFile.value != null) {
         await uploadFile();
       }
+      int leaveDays = 0;
+      if (shouldDeduct.value) {
+        DateTime start = DateTime.parse(startDate.value);
+        DateTime end = DateTime.parse(endDate.value);
+        leaveDays = end.difference(start).inDays + 1;
+      } else {
+        leaveDays = 0; // Half day — no deduction
+      }
+
+      // Pass `leaveDays` to backend or use in logic
 
       // Submit to Firebase using the leaves service
       final leaveId = await _firebaseLeavesService
@@ -136,25 +154,22 @@ class ApplyLeaveController extends GetxController {
             reason: reason.value,
             description: description.value,
             attachment: uploadedFile.value,
+            leaveDuration: selectedLeaveDuration.value,
+            shouldDeduct: shouldDeduct.value,
+            deductForm: deductForm.value,
           );
 
       print('Leave Application submitted with ID: $leaveId');
 
-      Get.snackbar(
-        'Success',
-        'Leave application submitted successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // Note: This method needs BuildContext to show SnackBar
+      // Consider moving this logic to the UI layer or using a different approach
 
       resetForm();
-      Get.back();
+      // Get.back();
     } catch (e) {
       errorMessage.value = 'Error submitting application: $e';
-      Get.snackbar(
-        'Error',
-        'Failed to submit application: $e',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      // Note: This method needs BuildContext to show SnackBar
+      // Consider moving this logic to the UI layer or using a different approach
       resetForm();
     } finally {
       isSubmitting.value = false;
@@ -164,6 +179,10 @@ class ApplyLeaveController extends GetxController {
   /// Set leave type
   void setLeaveType(String type) {
     selectedLeaveType.value = type;
+  }
+
+  void setDeductForm(String deduct) {
+    deductForm.value = deduct;
   }
 
   /// Set start date

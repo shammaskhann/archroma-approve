@@ -1,7 +1,9 @@
+import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/core/constants/app_theme.dart';
 import 'package:arch_approve/presentation/components/app_button.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/apply_leave_controller.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/widget/attachment_section.dart';
+import 'package:arch_approve/presentation/screens/apply_leaves/widget/duaration_dropdown.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/widget/leave_type_dropdown.dart';
 import 'package:arch_approve/presentation/screens/apply_leaves/widget/select_date_field.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +48,13 @@ class ApplyLeavesScreen extends StatelessWidget {
               SizedBox(height: 8.h),
               buildLeaveTypeDropdown(controller, theme),
               SizedBox(height: 20.h),
-
+              _buildSectionTitle("Leave Duration", theme),
+              SizedBox(height: 8),
+              buildDurationDropdown(controller, theme),
+              SizedBox(height: 20.h),
               // Date Selection
               Obx(() {
-                if (controller.selectedLeaveType.value == "Full Day" ||
-                    controller.selectedLeaveType.value == "Half Day") {
+                if (controller.selectedLeaveDuration.value == 'Half Day') {
                   // Show only one Date (assign to both start & end)
                   return _buildSectionTitle("Select Date", theme);
                 } else {
@@ -59,39 +63,41 @@ class ApplyLeavesScreen extends StatelessWidget {
               }),
               SizedBox(height: 8.h),
               Obx(() {
-                if (controller.selectedLeaveType.value == "Full Day" ||
-                    controller.selectedLeaveType.value == "Half Day") {
-                  // Show only one Date (assign to both start & end)
+                if (controller.selectedLeaveDuration.value == 'Half Day') {
                   return buildDateField("Select Date", controller.startDate, (
                     date,
                   ) {
                     controller.setStartDate(date);
-                    controller.setEndDate(date); // same as start
+                    controller.setEndDate(date);
                   }, theme);
                 } else {
+                  // For Full Day, show range option
                   return Row(
                     children: [
                       Expanded(
                         child: buildDateField(
                           "Start Date",
                           controller.startDate,
-                          (date) => controller.setStartDate(date),
+                          (date) {
+                            controller.setStartDate(date);
+                            controller.setEndDate(date); // Initially same
+                          },
                           theme,
                         ),
                       ),
                       SizedBox(width: 12.w),
                       Expanded(
-                        child: buildDateField(
-                          "End Date",
-                          controller.endDate,
-                          (date) => controller.setEndDate(date),
-                          theme,
-                        ),
+                        child: buildDateField("End Date", controller.endDate, (
+                          date,
+                        ) {
+                          controller.setEndDate(date);
+                        }, theme),
                       ),
                     ],
                   );
                 }
               }),
+
               SizedBox(height: 20.h),
 
               // Reason
@@ -132,8 +138,9 @@ class ApplyLeavesScreen extends StatelessWidget {
                 showGradient: false,
                 text: "Submit",
                 isLoading: controller.isSubmitting.value,
-                onPressed: () {
-                  controller.submitLeaveApplication();
+                onPressed: () async {
+                  await controller.submitLeaveApplication();
+                  Get.offAllNamed(AppRoutesConstant.dashboard);
                 },
               ),
             ],

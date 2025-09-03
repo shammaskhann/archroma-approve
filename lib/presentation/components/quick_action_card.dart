@@ -1,3 +1,4 @@
+import 'package:arch_approve/presentation/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arch_approve/core/constants/app_route_constant.dart';
@@ -7,6 +8,8 @@ class QuickActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<HomeController>();
+
     return Card(
       elevation: 4,
       margin: const EdgeInsets.all(16),
@@ -39,18 +42,21 @@ class QuickActionCard extends StatelessWidget {
                 ),
               ],
             ),
+
             const SizedBox(height: 16),
 
-            // Action Buttons
+            const SizedBox(height: 20),
+
+            // First Row of Actions
             Row(
               children: [
                 Expanded(
                   child: _buildActionButton(
-                    icon: Icons.calendar_today,
-                    title: 'Full Day',
-                    subtitle: 'Full day leave',
-                    color: Colors.green,
-                    onTap: () => _navigateToApplyLeave(context),
+                    icon: Icons.medical_services,
+                    title: 'Sick Leave',
+                    subtitle: 'Medical leave',
+                    color: Colors.red,
+                    onTap: () => _navigateToApplySickLeave(context),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -68,25 +74,15 @@ class QuickActionCard extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Additional Actions
+            // Second Row of Actions
             Row(
               children: [
-                Expanded(
-                  child: _buildActionButton(
-                    icon: Icons.medical_services,
-                    title: 'Sick Leave',
-                    subtitle: 'Medical leave',
-                    color: Colors.red,
-                    onTap: () => _navigateToApplySickLeave(context),
-                  ),
-                ),
-                const SizedBox(width: 12),
                 Expanded(
                   child: _buildActionButton(
                     icon: Icons.emergency,
                     title: 'Emergency',
                     subtitle: 'Emergency leave',
-                    color: Colors.red,
+                    color: Colors.redAccent,
                     onTap: () => _navigateToApplyWFH(context),
                   ),
                 ),
@@ -159,17 +155,14 @@ class QuickActionCard extends StatelessWidget {
   }
 
   void _navigateToApplyHalfDay(BuildContext context) {
-    // Navigate to apply leave with half day pre-selected
     Get.toNamed(AppRoutesConstant.applyLeave, arguments: "Half Day");
   }
 
   void _navigateToApplySickLeave(BuildContext context) {
-    // Navigate to apply leave with sick leave pre-selected
     Get.toNamed(AppRoutesConstant.applyLeave, arguments: 'Medical');
   }
 
   void _navigateToApplyWFH(BuildContext context) {
-    // Navigate to apply leave with work from home pre-selected
     Get.toNamed(AppRoutesConstant.applyLeave, arguments: "Emergency");
   }
 }

@@ -27,23 +27,62 @@ class HomeScreen extends StatelessWidget {
             children: [
               _buildWelcomeSetion(context),
               SizedBox(height: 5),
-              const QuickActionCard(),
-              SizedBox(height: 5),
-              // Recent Request Card
-              Obx(
-                () => RecentRequestCard(
-                  recentLeave: homeController.getRecentLeave,
-                  onViewAll: homeController.viewAllLeaves,
-                ),
-              ),
-
               // Leave Statistics
-              Obx(() => _buildLeaveStatistics(homeController)),
+              Obx(
+                () => homeController.isMainLoading.value
+                    ? SizedBox(height: 10)
+                    : Column(
+                        children: [
+                          Obx(() => _buildLeaveStatistics(homeController)),
+                          SizedBox(height: 5),
+                          // Recent Request Card
+                          Obx(
+                            () => RecentRequestCard(
+                              recentLeave: homeController.getRecentLeave,
+                              onViewAll: homeController.viewAllLeaves,
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                        ],
+                      ),
+              ),
+              // const QuickActionCard(),
 
               // Loading and Error States
               Obx(() => _buildLoadingAndErrorStates(homeController)),
 
               const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          gradient: kLightPrimaryGradient,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.25)),
+          ],
+        ),
+        child: FloatingActionButton.extended(
+          backgroundColor: Colors.transparent, // important!
+          elevation: 0, // so shadow matches container
+          onPressed: () {
+            Get.toNamed(AppRoutesConstant.applyLeave, arguments: "");
+          },
+          label: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.add, color: kWhiteColor),
+              SizedBox(width: 5),
+              Text(
+                "Apply Leaves",
+                style: TextStyle(
+                  color: kWhiteColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           ),
         ),
@@ -79,15 +118,7 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 15.0),
             child: Align(
               alignment: Alignment.centerRight,
-              child: InkWell(
-                onTap: () {
-                  final _auth = FirebaseAuth.instance;
-                  UserPref.clearData();
-                  _auth.signOut();
-                  Get.offAllNamed(AppRoutesConstant.login);
-                },
-                child: Icon(Icons.logout, color: kWhiteColor),
-              ),
+              child: const Icon(Icons.logout, color: Colors.transparent),
             ),
           ),
           Column(
@@ -117,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                     return DotsLoader(kWhiteColor);
                   }
                   return Text(
-                    "Shammas Khan",
+                    snapshot.data ?? "User",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -145,7 +176,7 @@ Widget _buildLeaveStatistics(HomeController controller) {
       borderRadius: BorderRadius.circular(16),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.1),
+          color: Colors.black.withOpacity(0.3),
           blurRadius: 10,
           offset: const Offset(0, 4),
         ),
@@ -156,10 +187,10 @@ Widget _buildLeaveStatistics(HomeController controller) {
       children: [
         Row(
           children: [
-            Icon(Icons.analytics, color: Colors.blue.shade600, size: 24),
+            Icon(Icons.inbox_outlined, color: Colors.blue.shade600, size: 24),
             const SizedBox(width: 8),
             Text(
-              'Leave Statistics',
+              'Remaining Leaves',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -174,25 +205,25 @@ Widget _buildLeaveStatistics(HomeController controller) {
           children: [
             Expanded(
               child: _buildStatItem(
-                icon: Icons.pending,
-                label: 'Pending',
-                value: stats['pending']?.toString() ?? '0',
+                icon: Icons.event_available, // 📆 Calendar check
+                label: 'Annual',
+                value: controller.annual.value.toString(),
                 color: Colors.orange,
               ),
             ),
             Expanded(
               child: _buildStatItem(
-                icon: Icons.check_circle,
-                label: 'Approved',
-                value: stats['accepted']?.toString() ?? '0',
+                icon: Icons.weekend, // 🪑 Casual break
+                label: 'Casual',
+                value: controller.casual.value.toString(),
                 color: Colors.green,
               ),
             ),
             Expanded(
               child: _buildStatItem(
-                icon: Icons.cancel,
-                label: 'Rejected',
-                value: stats['rejected']?.toString() ?? '0',
+                icon: Icons.medical_services, // 🏥 Medical
+                label: 'Sick',
+                value: controller.sick.value.toString(),
                 color: Colors.red,
               ),
             ),
@@ -200,45 +231,6 @@ Widget _buildLeaveStatistics(HomeController controller) {
         ),
 
         const SizedBox(height: 16),
-
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.blue.shade50,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.blue.shade200, width: 1),
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.summarize, color: Colors.blue.shade600, size: 24),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Total Applications',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                    Text(
-                      '${stats['total'] ?? 0}',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue.shade600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     ),
   );
@@ -275,16 +267,16 @@ Widget _buildStatItem({
 }
 
 Widget _buildLoadingAndErrorStates(HomeController controller) {
-  if (controller.getIsLoading) {
+  if (controller.getMainLoading) {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
       child: const Center(
         child: Column(
           children: [
-            CircularProgressIndicator(),
+            CircularProgressIndicator(color: kPrimaryColor),
             SizedBox(height: 16),
-            Text('Loading your leave information...'),
+            Text('Loading information...'),
           ],
         ),
       ),

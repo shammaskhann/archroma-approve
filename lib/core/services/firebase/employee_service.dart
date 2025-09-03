@@ -1,4 +1,5 @@
 import 'package:arch_approve/data/models/User_Model.dart';
+import 'package:arch_approve/data/models/leaveStats_Model.dart';
 import 'package:arch_approve/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,6 +31,7 @@ class FirebaseEmployeeService {
       );
 
       final uid = credential.user!.uid;
+      LeaveStatsModel _leaveStatsModel = LeaveStatsModel.initial();
       final userModel = UserModel(
         name: name,
         email: email,
@@ -37,6 +39,9 @@ class FirebaseEmployeeService {
         deviceToken: '',
         contactNo: contactNo,
         role: role,
+        casualLeaves: _leaveStatsModel.casualLeaves,
+        annualLeaves: _leaveStatsModel.annualLeaves,
+        sickLeaves: _leaveStatsModel.sickLeaves,
       );
 
       await _firestore.collection('employee').doc(uid).set(userModel.toJson());
@@ -56,7 +61,7 @@ class FirebaseEmployeeService {
     try {
       await _firestore.collection("employee").doc(uid).delete();
     } catch (e) {
-      print(e);
+      print('Error deleting employee: $e');
       rethrow;
     }
   }

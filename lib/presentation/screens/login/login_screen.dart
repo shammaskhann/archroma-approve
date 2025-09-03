@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () => Get.toNamed('/forgot-password'),
             child: const Text("Forgot Password?"),
           ),
         ),
@@ -226,9 +226,14 @@ Widget _mobileLayout(
                   const SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Text(
-                      "Forgot Password?",
-                      style: theme.displaySmall?.copyWith(color: kPrimaryColor),
+                    child: TextButton(
+                      onPressed: () => Get.toNamed('/forgot-password'),
+                      child: Text(
+                        "Forgot Password?",
+                        style: theme.displaySmall?.copyWith(
+                          color: kPrimaryColor,
+                        ),
+                      ),
                     ),
                   ),
 

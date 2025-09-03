@@ -18,7 +18,7 @@ abstract class FirebaseLeavesRepository {
 
   /// Update leave status (approve/reject)
   Future<void> updateLeaveStatus(
-    String leaveId,
+    LeaveModel leave,
     LeaveStatus status, {
     String? approvedBy,
     String? rejectionReason,
@@ -44,6 +44,9 @@ abstract class FirebaseLeavesRepository {
     required String reason,
     required String description,
     Map<String, dynamic>? attachment,
+    required String leaveDuration,
+    required bool shouldDeduct,
+    required String deductForm,
   });
 
   /// Stream of user's leave applications

@@ -1,40 +1,30 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:arch_approve/core/constants/app_route_constant.dart';
+import 'package:arch_approve/core/services/shared_pref/local_Storage_service.dart';
 import 'package:get/get.dart';
 
 class NotificationNavigationHandler {
-  static void handleTap(Map<String, dynamic> data) {
+  static void handleTap(Map<String, dynamic> data) async {
     final type = data['notification_type'];
     log('Notification tapped: $data');
 
     switch (type) {
-      case 'appointment_confirmed':
-        // Get.offAllNamed(
-        //   AppRoutesConstant.dashboard,
-        //   arguments: {'navIndex': 1, 'notificationDoctor': null},
-        // );
-        break;
-
-      case 'appointment_cancelled':
-        try {
-          // final doctorData = jsonDecode(data['doctor']);
-          // final doctor = DoctorModel.fromJson(doctorData);
-          // Get.offAllNamed(
-          //   AppRoutesConstant.dashboard,
-          //   arguments: {'navIndex': null, 'notificationDoctor': doctor},
-          // );
-        } catch (e) {
-          log('Error parsing doctor data: $e');
-        }
-        break;
-
-      case 'appointment_requested':
-        // Get.offAll(() => DashboardScreen(navIndex: 1));
-        break;
-
       default:
-        log('Unknown notification type: $type');
-      // Get.offAllNamed(AppRoutesConstant.dashboard);
+        String? role = await UserPref.getRole();
+        if (role == "admin") {
+          Get.offAllNamed(
+            AppRoutesConstant.adminDashboard,
+            arguments: {"index": 2}, // 👈 go to AdminRequestScreen for admin
+          );
+        } else if (role == "employee") {
+          Get.offAllNamed(
+            AppRoutesConstant.dashboard,
+            arguments: {"index": 1}, // 👈 go to LeaveHistoryScreen for employee
+          );
+        } else {
+          Get.offAllNamed(AppRoutesConstant.login);
+        }
     }
   }
 }

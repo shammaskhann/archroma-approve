@@ -1,3 +1,4 @@
+import 'package:arch_approve/core/constants/app_route_constant.dart';
 import 'package:arch_approve/core/constants/app_theme.dart';
 import 'package:arch_approve/data/models/Leave_Model.dart';
 import 'package:arch_approve/presentation/screens/leaves_history/history_controller.dart';
@@ -53,6 +54,37 @@ class LeaveHistoryScreen extends StatelessWidget {
             ],
           );
         }),
+
+        floatingActionButton: Container(
+          decoration: BoxDecoration(
+            gradient: kLightPrimaryGradient,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.25)),
+            ],
+          ),
+          child: FloatingActionButton.extended(
+            backgroundColor: Colors.transparent, // important!
+            elevation: 0, // so shadow matches container
+            onPressed: () {
+              Get.toNamed(AppRoutesConstant.applyLeave, arguments: "");
+            },
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.add, color: kWhiteColor),
+                SizedBox(width: 5),
+                Text(
+                  "Apply Leaves",
+                  style: TextStyle(
+                    color: kWhiteColor,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

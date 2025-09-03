@@ -9,14 +9,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class LeaveHistoryItem extends StatelessWidget {
+class PendingLeaveItem extends StatelessWidget {
   final LeaveModel leave;
-  final VoidCallback onViewDetails;
+  final VoidCallback onApprove;
+  final VoidCallback onReject;
 
-  const LeaveHistoryItem({
+  const PendingLeaveItem({
     Key? key,
     required this.leave,
-    required this.onViewDetails,
+    required this.onApprove,
+    required this.onReject,
   }) : super(key: key);
 
   @override
@@ -39,14 +41,18 @@ class LeaveHistoryItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Content
-            _buildLeaveInfo(leave),
+            _buildLeaveInfo(leave, onApprove, onReject),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildLeaveInfo(LeaveModel leave) {
+  Widget _buildLeaveInfo(
+    LeaveModel leave,
+    VoidCallback onApprove,
+    VoidCallback onReject,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -81,90 +87,20 @@ class LeaveHistoryItem extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        // Row(
-        //   children: [
-        //     Text(
-        //       'Reason:',
-        //       style: TextStyle(
-        //         fontSize: 14,
-        //         fontWeight: FontWeight.w600,
-        //         color: Colors.grey.shade700,
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        // const SizedBox(height: 4),
-        // Text(
-        //   leave.reason,
-        //   style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        //   maxLines: 2,
-        //   overflow: TextOverflow.ellipsis,
-        // ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            /// 📝 Reason (Left side)
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Reason:',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    leave.reason,
-                    style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(width: 12),
-
-            /// ✅ Approved By / ❌ Rejected Reason (Right side)
-            if (leave.status == LeaveStatus.accepted ||
-                leave.status == LeaveStatus.rejected)
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      leave.status == LeaveStatus.accepted
-                          ? 'Approved By:'
-                          : 'Rejected Reason:',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      leave.status == LeaveStatus.accepted
-                          ? (leave.approvedBy ?? 'N/A')
-                          : (leave.rejectionReason ?? 'Not provided'),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-          ],
+        Text(
+          'Reason:',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey.shade700,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          leave.reason,
+          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
 
         const SizedBox(height: 16),
@@ -195,6 +131,37 @@ class LeaveHistoryItem extends StatelessWidget {
         ],
 
         const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            // Reject Button
+            OutlinedButton(
+              onPressed: onReject,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.red,
+                side: const BorderSide(color: Colors.red),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Reject'),
+            ),
+            const SizedBox(width: 12),
+
+            // Approve Button
+            ElevatedButton(
+              onPressed: onApprove,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text('Approve'),
+            ),
+          ],
+        ),
       ],
     );
   }
