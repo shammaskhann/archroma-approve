@@ -48,9 +48,21 @@ class LeaveHistoryScreen extends StatelessWidget {
           return TabBarView(
             physics: const BouncingScrollPhysics(),
             children: [
-              _buildLeaveList(controller.pendingLeaves, "No pending leaves"),
-              _buildLeaveList(controller.acceptedLeaves, "No approved leaves"),
-              _buildLeaveList(controller.rejectedLeaves, "No rejected leaves"),
+              _buildLeaveList(
+                controller.pendingLeaves,
+                "No pending leaves",
+                controller,
+              ),
+              _buildLeaveList(
+                controller.acceptedLeaves,
+                "No approved leaves",
+                controller,
+              ),
+              _buildLeaveList(
+                controller.rejectedLeaves,
+                "No rejected leaves",
+                controller,
+              ),
             ],
           );
         }),
@@ -66,8 +78,9 @@ class LeaveHistoryScreen extends StatelessWidget {
           child: FloatingActionButton.extended(
             backgroundColor: Colors.transparent, // important!
             elevation: 0, // so shadow matches container
-            onPressed: () {
-              Get.toNamed(AppRoutesConstant.applyLeave, arguments: "");
+            onPressed: () async {
+              await Get.toNamed(AppRoutesConstant.applyLeave, arguments: "");
+              controller.loadLeaves();
             },
             label: Row(
               mainAxisSize: MainAxisSize.min,
@@ -89,23 +102,41 @@ class LeaveHistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLeaveList(RxList<LeaveModel> leaves, String emptyMessage) {
-    if (leaves.isEmpty) {
-      return _buildEmptyState(emptyMessage);
-    }
-
-    return ListView.separated(
-      padding: const EdgeInsets.all(16),
-      itemCount: leaves.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final leave = leaves[index];
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          child: LeaveHistoryItem(leave: leave, onViewDetails: () {}),
+  Widget _buildLeaveList(
+    RxList<LeaveModel> leaves,
+    String emptyMessage,
+    LeavesHistoryController controller,
+  ) {
+    return RefreshIndicator(
+      onRefresh: () => controller.loadLeaves(),
+      child: Obx(() {
+        if (controller.isLoading.value && leaves.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (leaves.isEmpty) {
+          return ListView(
+            physics:
+                const AlwaysScrollableScrollPhysics(), // Makes it scrollable even if empty
+            children: [
+              SizedBox(height: 150), // Push content to center
+              _buildEmptyState(emptyMessage),
+            ],
+          );
+        }
+        return ListView.separated(
+          padding: const EdgeInsets.all(16),
+          itemCount: leaves.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          itemBuilder: (context, index) {
+            final leave = leaves[index];
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              child: LeaveHistoryItem(leave: leave, onViewDetails: () {}),
+            );
+          },
         );
-      },
+      }),
     );
   }
 

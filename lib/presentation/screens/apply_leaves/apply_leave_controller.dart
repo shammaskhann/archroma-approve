@@ -125,6 +125,15 @@ class ApplyLeaveController extends GetxController {
       // Consider moving this logic to the UI layer or using a different approach
       return;
     }
+    DateTime start = DateTime.parse(startDate.value);
+    DateTime end = DateTime.parse(endDate.value);
+
+    /// 🚨 Validate that end date is not before start date
+    if (end.isBefore(start)) {
+      errorMessage.value = "End date cannot be earlier than start date.";
+      isSubmitting.value = false;
+      throw "Error";
+    }
 
     isSubmitting.value = true;
     errorMessage.value = '';

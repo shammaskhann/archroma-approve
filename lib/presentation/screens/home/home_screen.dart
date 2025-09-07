@@ -68,8 +68,9 @@ class HomeScreen extends StatelessWidget {
         child: FloatingActionButton.extended(
           backgroundColor: Colors.transparent, // important!
           elevation: 0, // so shadow matches container
-          onPressed: () {
-            Get.toNamed(AppRoutesConstant.applyLeave, arguments: "");
+          onPressed: () async {
+            await Get.toNamed(AppRoutesConstant.applyLeave, arguments: "");
+            homeController.initialize();
           },
           label: Row(
             mainAxisSize: MainAxisSize.min,

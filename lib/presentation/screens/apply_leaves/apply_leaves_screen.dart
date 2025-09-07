@@ -139,8 +139,12 @@ class ApplyLeavesScreen extends StatelessWidget {
                 text: "Submit",
                 isLoading: controller.isSubmitting.value,
                 onPressed: () async {
-                  await controller.submitLeaveApplication();
-                  Get.offAllNamed(AppRoutesConstant.dashboard);
+                  try {
+                    await controller.submitLeaveApplication();
+                    Get.offAllNamed(AppRoutesConstant.dashboard);
+                  } catch (e) {
+                    //do nothing
+                  }
                 },
               ),
             ],

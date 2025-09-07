@@ -38,6 +38,26 @@ class LeaveHistoryItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Row(
+              children: [
+                Text(
+                  "Name: ",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                Text(
+                  leave.user.name, // <-- shows the user's name
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
+            ),
             // Content
             _buildLeaveInfo(leave),
           ],
@@ -254,15 +274,15 @@ class LeaveHistoryItem extends StatelessWidget {
 
   bool isSameDateString(String a, String b) {
     final dateA = DateTime.parse(a);
-    log(dateA.toString());
+    //log(dateA.toString());
 
     final dateB = DateTime.parse(b);
-    log(dateB.toString());
+    //  log(dateB.toString());
     bool res =
         dateA.year == dateB.year &&
         dateA.month == dateB.month &&
         dateA.day == dateB.day;
-    log(res.toString());
+    // log(res.toString());
     return res;
   }
 }

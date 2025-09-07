@@ -18,15 +18,15 @@ class FirebaseLeavesService {
 
   bool isSameDateString(String a, String b) {
     final dateA = DateTime.parse(a);
-    log(dateA.toString());
+    //log(dateA.toString());
 
     final dateB = DateTime.parse(b);
-    log(dateB.toString());
+    //log(dateB.toString());
     bool res =
         dateA.year == dateB.year &&
         dateA.month == dateB.month &&
         dateA.day == dateB.day;
-    log(res.toString());
+    //log(res.toString());
     return res;
   }
 
@@ -182,7 +182,7 @@ class FirebaseLeavesService {
         updateData['approvedBy'] = approvedBy;
         updateData['approvedAt'] = FieldValue.serverTimestamp();
         updateData['rejectionReason'] = null;
-      } else if (leave.status == LeaveStatus.rejected) {
+      } else if (status == LeaveStatus.rejected) {
         updateData['rejectionReason'] = rejectionReason;
         updateData['approvedBy'] = null;
         updateData['approvedAt'] = null;

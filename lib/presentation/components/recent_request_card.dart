@@ -118,20 +118,71 @@ class RecentRequestCard extends StatelessWidget {
 
         const SizedBox(height: 16),
 
-        Text(
-          'Reason:',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade700,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          leave.reason,
-          style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            /// 📝 Reason (Left side)
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Reason:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    leave.reason,
+                    style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(width: 12),
+
+            /// ✅ Approved By / ❌ Rejected Reason (Right side)
+            if (leave.status == LeaveStatus.accepted ||
+                leave.status == LeaveStatus.rejected)
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      leave.status == LeaveStatus.accepted
+                          ? 'Approved By:'
+                          : 'Rejected Reason:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      leave.status == LeaveStatus.accepted
+                          ? (leave.approvedBy ?? 'N/A')
+                          : (leave.rejectionReason ?? 'Not provided'),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
 
         const SizedBox(height: 16),

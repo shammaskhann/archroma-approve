@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:arch_approve/core/services/firebase/leave_services.dart';
 import 'package:arch_approve/data/models/Leave_Model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,13 +16,14 @@ class LeavesHistoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadLeaves();
+    loadLeaves();
   }
 
-  _loadLeaves() async {
+  loadLeaves() async {
     final uid = _auth.currentUser?.uid;
     try {
       final userLeave = await _firebaseLeavesService.getUserLeaves(uid!);
+      log("New Leaves Loaded");
       pendingLeaves.assignAll(
         userLeave
             .where((leave) => leave.status == LeaveStatus.pending)
